@@ -13,6 +13,7 @@ public class HomePage {
 	
 	List<WebElement> listaProdutos = new ArrayList();
 	
+	private By textoProdutosNoCarrinho = By.className("cart-products-count");
 	private By produtos = By.className("product-description");
 	
 	// Construtor
@@ -27,6 +28,19 @@ public class HomePage {
 	
 	private void carregarListaProdutos() {
 		listaProdutos = driver.findElements(produtos);
+	}
+	
+	public int obterQuantidadeProdutosNoCarrinho() {
+		String quantidadeProdutosNoCarrinho = driver.findElement(textoProdutosNoCarrinho).getText();
+		// Tirando os parenteses para conversão em inteiro
+		quantidadeProdutosNoCarrinho = quantidadeProdutosNoCarrinho.replace("(", "");
+		quantidadeProdutosNoCarrinho = quantidadeProdutosNoCarrinho.replace(")", "");
+		
+		// Converter de String para Int
+		int qtdProdutosNoCarrinho = Integer.parseInt(quantidadeProdutosNoCarrinho);
+		
+		return qtdProdutosNoCarrinho;
+		
 	}
 	
 	
