@@ -66,8 +66,12 @@ public class homePageTests extends BaseTests {
 	}
 
 	@Test
-	public void testIncluirProdutoNoCarrinho_ProdutoIncluidoComSucesso() throws InterruptedException {
-
+	public void testIncluirProdutoNoCarrinho_ProdutoIncluidoComSucesso() {
+		
+		String tamanhoProduto = "M";
+		String corProduto = "Black";
+		int quantidadeProduto = 2;
+		
 		// --Pré-condição
 		// Usuário logado
 		if (!homePage.estaLogado("Romilton Viana Paixão")) {
@@ -81,7 +85,7 @@ public class homePageTests extends BaseTests {
 		// Selecionar tamanho
 		List<String> listaOpcoes = produtoPage.obterOpcoesSelecionadas();
 
-		produtoPage.selecionarOpcaoDropDown("M");
+		produtoPage.selecionarOpcaoDropDown(tamanhoProduto);
 
 		// Selecionar cor
 		produtoPage.selecionarCorPreta();
@@ -91,7 +95,9 @@ public class homePageTests extends BaseTests {
 		
 		// Adicionar no carrinho
 		ModalProdutoPage modalProdutoPage = produtoPage.clicarBotaoAddToCart();
-				
+	
+		//VALIDAÇÕES//
+		
 		//assertThat(modalProdutoPage.obterMensagemProdutoAdicionado(), is("Product successfully added to your shopping cart"));
 		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith("Product successfully added to your shopping cart"));
 	}
