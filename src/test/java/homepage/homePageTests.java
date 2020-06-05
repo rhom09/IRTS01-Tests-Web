@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import base.BaseTests;
+import pages.CarrinhoPage;
 import pages.LoginPage;
 import pages.ModalProdutoPage;
 import pages.ProdutoPage;
@@ -65,7 +66,9 @@ public class homePageTests extends BaseTests {
 		carregarPaginaInicial();
 
 	}
-
+	
+	ModalProdutoPage modalProdutoPage;
+	
 	@Test
 	public void testIncluirProdutoNoCarrinho_ProdutoIncluidoComSucesso() {
 		
@@ -95,7 +98,7 @@ public class homePageTests extends BaseTests {
 		produtoPage.alterarQuantidade(2);
 		
 		// Adicionar no carrinho
-		ModalProdutoPage modalProdutoPage = produtoPage.clicarBotaoAddToCart();
+		modalProdutoPage = produtoPage.clicarBotaoAddToCart();
 	
 		//VALIDAÇÕES//
 		String msg = "Product successfully added to your shopping cart";
@@ -118,6 +121,17 @@ public class homePageTests extends BaseTests {
 		Double subTotalCalculado = quantidadeProduto * precoProduto;
 		
 		assertThat(subTotal, is(subTotalCalculado));
+	}
+	
+	@Test
+	public void testIrParaCarrinho_InformacoesPersistidas() {
+		//-- Pré-Condições
+		// Produto incluido na tela ModalProdutoPage
+		testIncluirProdutoNoCarrinho_ProdutoIncluidoComSucesso();
+		
+		CarrinhoPage carrinhoPage = modalProdutoPage.clicarBotaoProceedToCheckOut();	
+		
+		
 	}
 
 }
