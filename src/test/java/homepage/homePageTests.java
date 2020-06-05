@@ -28,6 +28,7 @@ public class homePageTests extends BaseTests {
 	}
 
 	ProdutoPage produtoPage;
+	String nomeProduto_ProdutoPage;
 
 	@Test
 	public void testValidarDetalhesDoProduto_DescricaoEValorIguais() {
@@ -37,7 +38,7 @@ public class homePageTests extends BaseTests {
 
 		produtoPage = homePage.clicarProduto(indice);
 
-		String nomeProduto_ProdutoPage = produtoPage.obterNomeProduto();
+		nomeProduto_ProdutoPage = produtoPage.obterNomeProduto();
 		String precoProduto_ProdutoPage = produtoPage.obterPrecoProduto();
 
 		assertThat(nomeProduto_Home_Page.toUpperCase(), is(nomeProduto_ProdutoPage.toUpperCase()));
@@ -97,9 +98,26 @@ public class homePageTests extends BaseTests {
 		ModalProdutoPage modalProdutoPage = produtoPage.clicarBotaoAddToCart();
 	
 		//VALIDAÇÕES//
+		String msg = "Product successfully added to your shopping cart";
+		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith(msg));
 		
-		//assertThat(modalProdutoPage.obterMensagemProdutoAdicionado(), is("Product successfully added to your shopping cart"));
-		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith("Product successfully added to your shopping cart"));
+		assertThat(modalProdutoPage.obterDescricaoProduto().toUpperCase(), is(nomeProduto_ProdutoPage.toUpperCase()));
+		
+		String precoProdutoString = modalProdutoPage.ObterPrecoProduto();
+		precoProdutoString = precoProdutoString.replace("$", "");
+		Double precoProduto = Double.parseDouble(precoProdutoString);		
+		
+		assertThat(modalProdutoPage.obterTamanhoProduto(), is(tamanhoProduto));
+		assertThat(modalProdutoPage.obterCorProduto(), is(corProduto));
+		assertThat(modalProdutoPage.obterQuantidaeProduto(), is(Integer.toString(quantidadeProduto)));
+		
+		String subTotalString = modalProdutoPage.obterSubTotal();
+		subTotalString = subTotalString.replace("$", "");
+		Double subTotal = Double.parseDouble(subTotalString);
+		
+		Double subTotalCalculado = quantidadeProduto * precoProduto;
+		
+		assertThat(subTotal, is(subTotalCalculado));
 	}
 
 }
