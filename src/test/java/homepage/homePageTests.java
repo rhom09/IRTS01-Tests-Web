@@ -131,6 +131,9 @@ public class homePageTests extends BaseTests {
 		
 		CarrinhoPage carrinhoPage = modalProdutoPage.clicarBotaoProceedToCheckOut();	
 		
+		// Testes
+		
+		
 		
 	}
 
