@@ -140,6 +140,8 @@ public class homePageTests extends BaseTests {
 	Double esperado_totalTaxExclTotal = esperado_subTotalTotal + esperado_shippingTotal;
 	Double esperado_totalTaxIncTotal = esperado_totalTaxExclTotal;
 	Double esperado_taxesTotal = 0.00;
+	
+	String esperado_nomeCliente = "Romilton Viana Paixão";
 
 	CarrinhoPage carrinhoPage;
 
@@ -191,6 +193,18 @@ public class homePageTests extends BaseTests {
 
 		// Validar Informações na tela
 		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obter_totalTaxIncTotal()), is(esperado_totalTaxIncTotal));
+		assertTrue(checkoutPage.obter_nomeCliente().startsWith(esperado_nomeCliente));
+		
+		checkoutPage.clicarBotaoContinueAddress();
+		
+		// Variaveis e metodos para remover o cifrão e o texto para validação do valor do shipping
+		String encontrado_shinppingValor = checkoutPage.obter_shippingValor();
+		encontrado_shinppingValor = Funcoes.removeTexto(encontrado_shinppingValor, " tax excl.");
+		Double encontrado_shippingValor_Double = Funcoes.removeCifraoDevolveDouble(encontrado_shinppingValor);
+		
+		assertThat(encontrado_shippingValor_Double, is(esperado_shippingTotal));
+		
+		checkoutPage.clicarBotaoContinueShipping();
 
 	}
 
