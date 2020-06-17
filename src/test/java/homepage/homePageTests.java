@@ -13,6 +13,7 @@ import pages.CarrinhoPage;
 import pages.CheckoutPage;
 import pages.LoginPage;
 import pages.ModalProdutoPage;
+import pages.PedidoPage;
 import pages.ProdutoPage;
 import util.Funcoes;
 
@@ -140,7 +141,7 @@ public class homePageTests extends BaseTests {
 	Double esperado_totalTaxExclTotal = esperado_subTotalTotal + esperado_shippingTotal;
 	Double esperado_totalTaxIncTotal = esperado_totalTaxExclTotal;
 	Double esperado_taxesTotal = 0.00;
-	
+
 	String esperado_nomeCliente = "Romilton Viana Paixão";
 
 	CarrinhoPage carrinhoPage;
@@ -192,40 +193,60 @@ public class homePageTests extends BaseTests {
 		// Preencher informações
 
 		// Validar Informações na tela
-		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obter_totalTaxIncTotal()), is(esperado_totalTaxIncTotal));
+		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obter_totalTaxIncTotal()),
+				is(esperado_totalTaxIncTotal));
 		assertTrue(checkoutPage.obter_nomeCliente().startsWith(esperado_nomeCliente));
-		
+
 		checkoutPage.clicarBotaoContinueAddress();
-		
-		// Variaveis e metodos para remover o cifrão e o texto para validação do valor do shipping
+
+		// Variaveis e metodos para remover o cifrão e o texto para validação do valor
+		// do shipping
 		String encontrado_shinppingValor = checkoutPage.obter_shippingValor();
 		encontrado_shinppingValor = Funcoes.removeTexto(encontrado_shinppingValor, " tax excl.");
 		Double encontrado_shippingValor_Double = Funcoes.removeCifraoDevolveDouble(encontrado_shinppingValor);
-		
+
 		assertThat(encontrado_shippingValor_Double, is(esperado_shippingTotal));
-		
+
 		checkoutPage.clicarBotaoContinueShipping();
-		
-		//Selecionar opção "Pay By Check"
+
+		// Selecionar opção "Pay By Check"
 		checkoutPage.selecionarRadioPayByCheck();
-		
-		//Validar valor do cheque (amount)
+
+		// Validar valor do cheque (amount)
 		String encontrado_amountPayByCheck = checkoutPage.obter_amountPayByCheck();
 		encontrado_amountPayByCheck = Funcoes.removeTexto(encontrado_amountPayByCheck, " (tax incl.)");
 		Double encontrado_amountPayByCheck_Double = Funcoes.removeCifraoDevolveDouble(encontrado_amountPayByCheck);
-		
+
 		assertThat(encontrado_amountPayByCheck_Double, is(esperado_totalTaxIncTotal));
-		
-		//Clicar na opção "I agree"
+
+		// Clicar na opção "I agree"
 		checkoutPage.selecionarCheckboxIAgree();
-		
+
 		assertTrue(checkoutPage.estaSelecionadoCheckboxIAgree());
+	}
+	
+	@Test
+	public void testFinalizarPedido_pedidoFinalizadoComSucesso() {
+		// Pré-condição
+		// Checkout completamente concluido
+		testIrParaCheckout_FreteMeioPagamentoEnderecoListadosOk();
 		
+		// Teste
+		// Clicar no botão para confirmar o pedido
+		PedidoPage pedidoPage = checkoutPage.clicarBotaoConfirmaPedido();
 		
-		
-		
-		
+		// Validar valores da tela
+		assertTrue(pedidoPage.obter_textoPedidoConfirmado().endsWith("YOUR ORDER IS CONFIRMED"));
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
