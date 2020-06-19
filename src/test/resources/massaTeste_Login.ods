@@ -1,0 +1,3 @@
+nomeTeste,e-mail,password,resultado
+loginValido,rhom0909@teste.com,pwd123,positivo
+loginInvalido,rhom0909@teste.com,abc123,negativo
